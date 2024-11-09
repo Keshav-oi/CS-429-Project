@@ -38,6 +38,15 @@ function drawBoard() {
             ctx.strokeRect(col * cellWidth, row * cellHeight, cellWidth, cellHeight);
         }
     }
+
+    // Draw current board state
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            if (board[row][col]) {
+                ctx.fillText(board[row][col], col * cellWidth + cellWidth / 3, row * cellHeight + cellHeight / 1.5);
+            }
+        }
+    }
 }
 
 // Handle the start button click event
@@ -45,7 +54,19 @@ startButton.addEventListener("click", () => {
     // Initialize or reset the game board
     board = Array(rows).fill().map(() => Array(cols).fill(null)); // Reset the game board
     turn = 'Player'; // Reset the turn to Player
-    drawBoard(); // Draw the board with the selected size
+
+    // Set canvas size dynamically based on the selected rows and columns
+    canvas.width = 400;
+    canvas.height = 400;
+    if (cols > rows) {
+        canvas.width = 400;
+        canvas.height = 400 * (rows / cols); // Adjust the height
+    }
+
+    // Draw the initial empty board
+    drawBoard();
+
+    // Update the status message
     document.getElementById("gameMessage").textContent = "Player's turn";
 });
 
@@ -60,12 +81,11 @@ canvas.addEventListener("click", (event) => {
     if (board[row][col] === null) {
         board[row][col] = turn === 'Player' ? 'X' : 'O';
         drawBoard();
-        // Draw markers
-        ctx.fillText(board[row][col], col * cellWidth + cellWidth / 3, row * cellHeight + cellHeight / 1.5);
-
+        
         // Check for winner or change turn
         checkWinner(row, col);
 
+        // Switch turns between Player and AI
         turn = (turn === 'Player') ? 'AI' : 'Player'; // Switch turn
         document.getElementById("gameMessage").textContent = `${turn}'s turn`;
     }
