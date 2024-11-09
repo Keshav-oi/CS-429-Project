@@ -9,6 +9,21 @@
 <body>
     <h1>Connect Three</h1>
     
+    <!-- Sliders for selecting grid size -->
+    <div>
+        <label for="rowSlider">Rows: </label>
+        <input type="range" id="rowSlider" min="4" max="10" value="4">
+        <span id="rowValue">4</span>
+    </div>
+    <div>
+        <label for="colSlider">Columns: </label>
+        <input type="range" id="colSlider" min="4" max="10" value="4">
+        <span id="colValue">4</span>
+    </div>
+
+    <!-- Start button to initialize the game -->
+    <button id="startButton">Start Game</button>
+    
     <!-- Canvas for game board -->
     <canvas id="gameBoard" width="400" height="400"></canvas>
     
