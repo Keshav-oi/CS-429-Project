@@ -1,78 +1,78 @@
-// script.js
+// Variables for grid size and game state
+let rows = 4;
+let cols = 4;
+let board = [];
+let turn = 'Player'; // Player starts the game
 
-// Constants for the game
-const boardSize = 4; // Set board size to 4x4 or 5x5 as needed
-let board = Array.from({ length: boardSize }, () => Array(boardSize).fill(null));
-let currentPlayer = 'X'; // Player starts as 'X'
-const canvas = document.getElementById('gameBoard');
-const ctx = canvas.getContext('2d');
-const cellSize = canvas.width / boardSize;
+// Getting elements
+const rowSlider = document.getElementById("rowSlider");
+const colSlider = document.getElementById("colSlider");
+const rowValue = document.getElementById("rowValue");
+const colValue = document.getElementById("colValue");
+const startButton = document.getElementById("startButton");
+const canvas = document.getElementById("gameBoard");
+const ctx = canvas.getContext("2d");
 
-// Draw the initial empty board
+// Update the displayed row and column values when sliders change
+rowSlider.addEventListener("input", () => {
+    rows = rowSlider.value;
+    rowValue.textContent = rows;
+});
+
+colSlider.addEventListener("input", () => {
+    cols = colSlider.value;
+    colValue.textContent = cols;
+});
+
+// Draw the game board based on selected rows and columns
 function drawBoard() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the board
-    for (let row = 0; row < boardSize; row++) {
-        for (let col = 0; col < boardSize; col++) {
-            ctx.strokeRect(col * cellSize, row * cellSize, cellSize, cellSize);
-            if (board[row][col]) {
-                drawMarker(row, col, board[row][col]);
-            }
+    // Update the canvas size based on rows and columns
+    const cellWidth = canvas.width / cols;
+    const cellHeight = canvas.height / rows;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the board before redrawing
+
+    // Draw grid
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            ctx.strokeRect(col * cellWidth, row * cellHeight, cellWidth, cellHeight);
         }
     }
 }
 
-// Draw a player's marker on the board
-function drawMarker(row, col, player) {
-    ctx.font = `${cellSize * 0.8}px Arial`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(player, col * cellSize + cellSize / 2, row * cellSize + cellSize / 2);
-}
+// Handle the start button click event
+startButton.addEventListener("click", () => {
+    // Initialize or reset the game board
+    board = Array(rows).fill().map(() => Array(cols).fill(null)); // Reset the game board
+    turn = 'Player'; // Reset the turn to Player
+    drawBoard(); // Draw the board with the selected size
+    document.getElementById("gameMessage").textContent = "Player's turn";
+});
 
-// Handle player click
-canvas.addEventListener('click', (e) => {
-    const x = Math.floor(e.offsetX / cellSize);
-    const y = Math.floor(e.offsetY / cellSize);
-    
-    // Place player's marker if the cell is empty
-    if (!board[y][x]) {
-        board[y][x] = currentPlayer;
+// Drawing logic for player's and AI's moves (just simple markers for now)
+canvas.addEventListener("click", (event) => {
+    const cellWidth = canvas.width / cols;
+    const cellHeight = canvas.height / rows;
+
+    const col = Math.floor(event.offsetX / cellWidth);
+    const row = Math.floor(event.offsetY / cellHeight);
+
+    if (board[row][col] === null) {
+        board[row][col] = turn === 'Player' ? 'X' : 'O';
         drawBoard();
-        
-        if (checkWin(currentPlayer)) {
-            document.getElementById('gameMessage').textContent = `${currentPlayer} wins!`;
-            canvas.removeEventListener('click', arguments.callee); // End game
-        } else if (isDraw()) {
-            document.getElementById('gameMessage').textContent = "It's a draw!";
-        } else {
-            // Switch players
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            document.getElementById('gameMessage').textContent = `${currentPlayer}'s turn`;
-        }
+        // Draw markers
+        ctx.fillText(board[row][col], col * cellWidth + cellWidth / 3, row * cellHeight + cellHeight / 1.5);
+
+        // Check for winner or change turn
+        checkWinner(row, col);
+
+        turn = (turn === 'Player') ? 'AI' : 'Player'; // Switch turn
+        document.getElementById("gameMessage").textContent = `${turn}'s turn`;
     }
 });
 
-// Check for a win condition
-function checkWin(player) {
-    // Check rows and columns
-    for (let i = 0; i < boardSize; i++) {
-        if (board[i].every(cell => cell === player) ||
-            board.map(row => row[i]).every(cell => cell === player)) {
-            return true;
-        }
-    }
-
-    // Check diagonals
-    return (
-        board.map((row, i) => row[i]).every(cell => cell === player) ||
-        board.map((row, i) => row[boardSize - 1 - i]).every(cell => cell === player)
-    );
+// A basic function to check if a player has won (you can improve it later with minimax)
+function checkWinner(row, col) {
+    // Placeholder function - you'll need to implement win logic later
+    console.log(`${turn} clicked on (${row}, ${col})`);
 }
-
-// Check for draw condition
-function isDraw() {
-    return board.flat().every(cell => cell !== null);
-}
-
-// Initialize game on page load
-window.onload = drawBoard;
