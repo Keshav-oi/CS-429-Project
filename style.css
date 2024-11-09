@@ -1,0 +1,33 @@
+/* style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    color: #333;
+    margin: 20px 0;
+}
+
+#gameBoard {
+    border: 2px solid #333;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+#status {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+#gameMessage {
+    color: #333;
+    font-weight: bold;
+}
