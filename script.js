@@ -26,10 +26,10 @@ colSlider.addEventListener("input", () => {
 
 // Draw the game board based on selected rows and columns
 function drawBoard() {
-    // Update the canvas size based on rows and columns
+    // Calculate cell width and height
     const cellWidth = canvas.width / cols;
     const cellHeight = canvas.height / rows;
-    
+
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the board before redrawing
 
     // Draw grid
@@ -39,7 +39,7 @@ function drawBoard() {
         }
     }
 
-    // Draw current board state
+    // Draw current board state (X for Player, O for AI)
     for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
             if (board[row][col]) {
@@ -63,6 +63,11 @@ startButton.addEventListener("click", () => {
         canvas.height = 400 * (rows / cols); // Adjust the height
     }
 
+    // Set text font for the board
+    ctx.font = "30px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
     // Draw the initial empty board
     drawBoard();
 
@@ -70,18 +75,20 @@ startButton.addEventListener("click", () => {
     document.getElementById("gameMessage").textContent = "Player's turn";
 });
 
-// Drawing logic for player's and AI's moves (just simple markers for now)
+// Handle clicks on the canvas
 canvas.addEventListener("click", (event) => {
     const cellWidth = canvas.width / cols;
     const cellHeight = canvas.height / rows;
 
+    // Calculate column and row of the clicked cell
     const col = Math.floor(event.offsetX / cellWidth);
     const row = Math.floor(event.offsetY / cellHeight);
 
+    // If the cell is empty, update the game state and redraw the board
     if (board[row][col] === null) {
         board[row][col] = turn === 'Player' ? 'X' : 'O';
         drawBoard();
-        
+
         // Check for winner or change turn
         checkWinner(row, col);
 
