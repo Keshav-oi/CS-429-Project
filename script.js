@@ -43,7 +43,7 @@ function drawBoard() {
     for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
             if (board[row][col]) {
-                ctx.fillText(board[row][col], col * cellWidth + cellWidth / 3, row * cellHeight + cellHeight / 1.5);
+                ctx.fillText(board[row][col], col * cellWidth + cellWidth / 2, row * cellHeight + cellHeight / 2);
             }
         }
     }
@@ -58,9 +58,11 @@ startButton.addEventListener("click", () => {
     // Set canvas size dynamically based on the selected rows and columns
     canvas.width = 400;
     canvas.height = 400;
+
+    // Adjust canvas size based on rows/cols if needed
     if (cols > rows) {
         canvas.width = 400;
-        canvas.height = 400 * (rows / cols); // Adjust the height
+        canvas.height = 400 * (rows / cols); // Adjust height for better scaling
     }
 
     // Set text font for the board
@@ -77,12 +79,17 @@ startButton.addEventListener("click", () => {
 
 // Handle clicks on the canvas
 canvas.addEventListener("click", (event) => {
+    // Calculate cell width and height
     const cellWidth = canvas.width / cols;
     const cellHeight = canvas.height / rows;
 
-    // Calculate column and row of the clicked cell
+    // Calculate the column and row of the clicked cell
     const col = Math.floor(event.offsetX / cellWidth);
     const row = Math.floor(event.offsetY / cellHeight);
+
+    // Debugging: Log row, col, and offset values
+    console.log("Clicked at offsetX: " + event.offsetX + " offsetY: " + event.offsetY);
+    console.log("Calculated cell - Row: " + row + " Col: " + col);
 
     // If the cell is empty, update the game state and redraw the board
     if (board[row][col] === null) {
