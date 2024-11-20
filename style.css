@@ -1,1 +1,104 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+#container {
+    display: flex;
+    height: 100vh;
+}
+
+#sidebar {
+    width: 250px;
+    padding: 20px;
+    background-color: #2c3e50;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#sidebar h2 {
+    margin-bottom: 20px;
+}
+
+#sidebar label {
+    font-size: 16px;
+    color: white;
+    margin: 5px 0;
+}
+
+#sidebar input {
+    font-size: 16px;
+    color: black; /* Set text color inside input */
+    background-color: #ffffff; /* Light background for better contrast */
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    width: 100%;
+    text-align: center;
+}
+
+#sidebar button {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#sidebar button:hover {
+    background-color: #2980b9;
+}
+
+#main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#game-board {
+    display: grid;
+    grid-gap: 5px;
+    margin-top: 20px;
+    background-color: #3498db;
+    padding: 10px;
+    border-radius: 10px;
+    width: 80vmin; /* Ensures responsive width */
+    height: 80vmin; /* Keeps it square */
+}
+
+.cell {
+    background-color: #ecf0f1;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.cell.red {
+    background-color: red;
+}
+
+.cell.yellow {
+    background-color: yellow;
+}
+
+/* Sidebar adjustments for the instructions section */
+#instructions {
+    background-color: #34495e;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    text-align: left;
+}
+#instructions h3 {
+    margin-top: 0;
+}
 
